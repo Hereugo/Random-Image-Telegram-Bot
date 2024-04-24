@@ -1,7 +1,7 @@
 import { Bot } from "grammy";
 import { padNumberWithZeros } from "./utils.js";
 
-export default function createBot(token, pb, openai) {
+export default function createBot(token, pb) {
   const bot = new Bot(token);
 
   // middleware to create new user if not exists
@@ -49,62 +49,10 @@ export default function createBot(token, pb, openai) {
   });
 
   bot.command("start", async (ctx) => {
-    await ctx.reply(
-      "👋 Welcome to [Your Bot Name]!\n" +
-        "I'm here to assist you with any questions you have. Just type `/bot` followed by your message, and I'll do my best to help you out.\n\n" +
-        "Feel free to explore the features and let me know if there's anything specific you need assistance with. Have a great time chatting!\n",
-    );
+    await ctx.reply("Hello world!");
   });
 
-  bot.hears(/bot *(.+)?/, async (ctx) => {
-    const message = ctx.message.text;
-    const request = message.split("bot ")[1];
-
-    if (ctx.userInfo.isAllowed === false) {
-      return ctx.reply("You are not allowed to send messages to the bot.");
-    }
-
-    const completion = await openai.chat.completions.create({
-      model: ctx.config.model || "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: ctx.config.systemMessage || "You are a helpful assistant.",
-        },
-        {
-          role: "user",
-          content: request,
-        },
-      ],
-    });
-
-    const response = completion.choices[0].message.content;
-
-    // const completion = {};
-    // const response = "Hello!";
-
-    try {
-      const data = {
-        user: ctx.userInfo.id,
-        bot: ctx.config.id,
-        request,
-        response,
-        modelUsed: completion.model || "gpt-3.5-turbo",
-        // totalTokens: 0,
-        totalTokens: completion.usage.total_tokens || 0,
-      };
-
-      pb.collection("messages")
-        .create(data)
-        .then((res) => {
-          console.log("Message saved: ", res);
-
-          ctx.reply(response);
-        });
-    } catch (error) {
-      console.log("Error: ", error.message);
-    }
-  });
+  bot.command("random", async (ctx) => {});
 
   bot.catch((err) => console.error(err));
 

@@ -1,7 +1,7 @@
 {
-  "name": "chatgpt-telegram-bot",
+  "name": "random-image-telegram-bot",
   "version": "1.0.0",
-  "description": "A Telegram bot that uses OpenAI's GPT-3 to chat with users.",
+  "description": "A Telegram bot that returns a random image",
   "main": "./src/server.js",
   "scripts": {
     "dev": "nodemon ./src/server.js",
@@ -12,16 +12,9 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/H-reugo/chatgpt-telegram-bot"
-  },
   "keywords": [
     "telegram",
-    "bot",
-    "chat",
-    "gpt-3",
-    "openai"
+    "bot"
   ],
   "type": "module",
   "dependencies": {
@@ -30,7 +23,6 @@
     "express": "^4.19.2",
     "grammy": "^1.22.4",
     "nodemon": "^3.1.0",
-    "openai": "^4.33.0",
     "pocketbase": "^0.21.1"
   }
 }

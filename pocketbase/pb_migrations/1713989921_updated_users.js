@@ -3,26 +3,25 @@ migrate((db) => {
   const dao = new Dao(db)
   const collection = dao.findCollectionByNameOrId("_pb_users_auth_")
 
-  // update
-  collection.schema.addField(new SchemaField({
-    "system": false,
-    "id": "9hazd8xn",
-    "name": "firstName",
-    "type": "text",
-    "required": false,
-    "presentable": false,
-    "unique": false,
-    "options": {
-      "min": null,
-      "max": null,
-      "pattern": ""
-    }
-  }))
+  collection.options = {
+    "allowEmailAuth": false,
+    "allowOAuth2Auth": false,
+    "allowUsernameAuth": true,
+    "exceptEmailDomains": null,
+    "manageRule": null,
+    "minPasswordLength": 8,
+    "onlyEmailDomains": null,
+    "onlyVerified": false,
+    "requireEmail": false
+  }
 
-  // update
+  // remove
+  collection.schema.removeField("users_avatar")
+
+  // add
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "xtyqdr9p",
+    "id": "u6z7q8vq",
     "name": "lastName",
     "type": "text",
     "required": false,
@@ -35,10 +34,42 @@ migrate((db) => {
     }
   }))
 
-  // update
+  // add
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "ycohddfx",
+    "id": "7fqvqi6n",
+    "name": "phoneNumber",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+      "min": null,
+      "max": null,
+      "pattern": ""
+    }
+  }))
+
+  // add
+  collection.schema.addField(new SchemaField({
+    "system": false,
+    "id": "kn7vk4yi",
+    "name": "languageCode",
+    "type": "text",
+    "required": false,
+    "presentable": false,
+    "unique": false,
+    "options": {
+      "min": null,
+      "max": null,
+      "pattern": ""
+    }
+  }))
+
+  // add
+  collection.schema.addField(new SchemaField({
+    "system": false,
+    "id": "56qib6fy",
     "name": "isAllowed",
     "type": "bool",
     "required": false,
@@ -50,24 +81,8 @@ migrate((db) => {
   // update
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "od9mxcs9",
-    "name": "phoneNumber",
-    "type": "text",
-    "required": false,
-    "presentable": false,
-    "unique": false,
-    "options": {
-      "min": null,
-      "max": null,
-      "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
-    }
-  }))
-
-  // update
-  collection.schema.addField(new SchemaField({
-    "system": false,
-    "id": "2qtxebyn",
-    "name": "languageCode",
+    "id": "users_name",
+    "name": "firstName",
     "type": "text",
     "required": false,
     "presentable": false,
@@ -84,71 +99,59 @@ migrate((db) => {
   const dao = new Dao(db)
   const collection = dao.findCollectionByNameOrId("_pb_users_auth_")
 
-  // update
+  collection.options = {
+    "allowEmailAuth": true,
+    "allowOAuth2Auth": true,
+    "allowUsernameAuth": true,
+    "exceptEmailDomains": null,
+    "manageRule": null,
+    "minPasswordLength": 8,
+    "onlyEmailDomains": null,
+    "onlyVerified": false,
+    "requireEmail": false
+  }
+
+  // add
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "9hazd8xn",
-    "name": "first_name",
-    "type": "text",
+    "id": "users_avatar",
+    "name": "avatar",
+    "type": "file",
     "required": false,
     "presentable": false,
     "unique": false,
     "options": {
-      "min": null,
-      "max": null,
-      "pattern": ""
+      "mimeTypes": [
+        "image/jpeg",
+        "image/png",
+        "image/svg+xml",
+        "image/gif",
+        "image/webp"
+      ],
+      "thumbs": null,
+      "maxSelect": 1,
+      "maxSize": 5242880,
+      "protected": false
     }
   }))
 
-  // update
-  collection.schema.addField(new SchemaField({
-    "system": false,
-    "id": "xtyqdr9p",
-    "name": "last_name",
-    "type": "text",
-    "required": false,
-    "presentable": false,
-    "unique": false,
-    "options": {
-      "min": null,
-      "max": null,
-      "pattern": ""
-    }
-  }))
+  // remove
+  collection.schema.removeField("u6z7q8vq")
+
+  // remove
+  collection.schema.removeField("7fqvqi6n")
+
+  // remove
+  collection.schema.removeField("kn7vk4yi")
+
+  // remove
+  collection.schema.removeField("56qib6fy")
 
   // update
   collection.schema.addField(new SchemaField({
     "system": false,
-    "id": "ycohddfx",
-    "name": "is_allowed",
-    "type": "bool",
-    "required": false,
-    "presentable": false,
-    "unique": false,
-    "options": {}
-  }))
-
-  // update
-  collection.schema.addField(new SchemaField({
-    "system": false,
-    "id": "od9mxcs9",
-    "name": "phone_number",
-    "type": "text",
-    "required": false,
-    "presentable": false,
-    "unique": false,
-    "options": {
-      "min": null,
-      "max": null,
-      "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
-    }
-  }))
-
-  // update
-  collection.schema.addField(new SchemaField({
-    "system": false,
-    "id": "2qtxebyn",
-    "name": "language_code",
+    "id": "users_name",
+    "name": "name",
     "type": "text",
     "required": false,
     "presentable": false,

@@ -1,10 +1,15 @@
-# Chat GPT Telegram Bot
+# Random Image Telegram Bot
 
-This is a chat GPT telegram bot(s) service, that provides a simple way to monitor all bots with an admin panel.
+This is a telegram bot that serves random amount of images when requested.
 
 ## Screenshots
 
-TODO
+TODO:
+
+- [x] Configure pocketbase to work
+- [x] Setup telegram bot to output hello world
+- [ ] Somehow manage 500 images
+- [ ] Make command /random <number here>
 
 ## Features
 
@@ -27,7 +32,6 @@ Customize the configuration by copying `.env.example` and renaming it to `.env`,
 
 | Parameters   | Description    |
 |--------------- | --------------- |
-| OPENAI_API_KEY | Your OpenAI API key, you can get it from [here](https://platform.openai.com/account/api-keys) |
 | PB_ADMIN_EMAIL   | Email used to register to pocketbase first time. |
 | PB_ADMIN_PASSWORD  | Password used to register to pocketbase first time. |
 
@@ -36,8 +40,8 @@ Customize the configuration by copying `.env.example` and renaming it to `.env`,
 Clone the repository and navigate to the project directory:
 
 ```
-git clone https://github.com/Hereugo/ChatGPT-Telegram-Service.git 
-cd ChatGPT-Telegram-Service
+git clone https://github.com/Hereugo/Random-Image-Telegram-Bot.git 
+cd Random-Image-Telegram-Bot 
 ```
 
 #### Running Locally
@@ -57,10 +61,6 @@ npm run start
 ### Running using Docker Compose
 
 TODO
-
-## Disclaimer
-
-This is a personal project and is not affiliated with OpenAI in any way.
 
 ## Authors
 
