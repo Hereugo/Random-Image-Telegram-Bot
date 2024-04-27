@@ -1,11 +1,12 @@
 version: '3.3'
+name: random-image-bot
 services:
   pocketbase: 
     build: ../pocketbase/
     environment:
       APP_URL: 'http://bot:3000'
     volumes:
-      - './pocketbase-data:/pb/pb_data'
+      - 'pocketbase-data:/pb/pb_data'
     ports:
       - 8080:8080
     restart: always
@@ -15,7 +16,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - ./.env
+      - ../.env
     environment:
       PB_HOST: 'http://pocketbase:8080'
     restart: always

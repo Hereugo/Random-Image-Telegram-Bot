@@ -1,4 +1,4 @@
-import { Bot } from "grammy";
+import { Bot, InputFile, InputMediaBuilder } from "grammy";
 import { padNumberWithZeros } from "./utils.js";
 
 export default function createBot(token, pb) {
@@ -32,6 +32,10 @@ export default function createBot(token, pb) {
 
     ctx.userInfo = user;
 
+    if (!user.isAllowed) {
+      return ctx.reply("You are not allowed to use this bot.");
+    }
+
     await next();
   });
 
@@ -52,7 +56,52 @@ export default function createBot(token, pb) {
     await ctx.reply("Hello world!");
   });
 
-  bot.command("random", async (ctx) => {});
+  bot.hears(/random *([0-9]+)?/, async (ctx) => {
+    const message = ctx.message.text;
+    const count = message.split("random ")[1] || 1;
+
+    if (count > 10 || count < 1) {
+      return ctx.reply("Please provide a number between 1 and 10.");
+    }
+
+    const botmsg = await ctx.reply("Please wait...");
+
+    const records = await pb.collection("images").getFullList({
+      sort: "-created",
+    });
+
+    let rep = count;
+    let buffers = [];
+    while (rep--) {
+      // get a random image
+      const randomIndex = Math.floor(Math.random() * records.length);
+      const randomImage = records[randomIndex];
+      const firstFilename = randomImage.image;
+
+      const imageUrl =
+        pb.files.getUrl(randomImage, firstFilename) + "?download=1";
+
+      buffers.push(fetch(imageUrl).then((response) => response.arrayBuffer()));
+    }
+
+    Promise.all(buffers)
+      .then(async (buffers) => {
+        await ctx.api.editMessageText(
+          ctx.chat.id,
+          botmsg.message_id,
+          "Sending images...",
+        );
+
+        await ctx.replyWithMediaGroup(
+          buffers.map((buffer) =>
+            InputMediaBuilder.photo(new InputFile(new Uint8Array(buffer))),
+          ),
+        );
+
+        await ctx.api.deleteMessage(ctx.chat.id, botmsg.message_id);
+      })
+      .catch((err) => console.error(err));
+  });
 
   bot.catch((err) => console.error(err));
 
